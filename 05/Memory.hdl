@@ -1,4 +1,5 @@
 // This file is part of www.nand2tetris.org
+
 // and the book "The Elements of Computing Systems"
 // by Nisan and Schocken, MIT Press.
 // File name: projects/05/Memory.hdl
@@ -27,5 +28,17 @@ CHIP Memory {
     OUT out[16];
 
     PARTS:
-    // Put your code here:
+    DMux4Way(in=load, sel=address[13..14], a=lr1, b=lr2, c=lscr, d=lkdb);
+
+    Or(a=lr1, b=lr2, out=ram);
+    RAM16K(in=in, load=ram, address=address[0..13], out=ram16);
+
+    Screen(in=in, address=address[0..12], load=lscr, out=scr);
+
+    Keyboard(out=kbd);
+
+    Mux4Way16(a=ram16, b=ram16, c=scr, d=kbd, sel=address[13..14], out=out);
+
+
+
 }
